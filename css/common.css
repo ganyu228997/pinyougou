@@ -27,18 +27,27 @@
 .fr {
     float: right;
 }
+
+.fr li {
+    position: relative;
+    width: 100px;
+    float: right ;
+    text-align: center;
+}
+.fr li ul {
+    display: none;
+    position: absolute;
+    top: 25px;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 9999;
+}
 .style_red {
     color: #c81623;
 }
 .shortcut ul li {
     float: left;
-}
-/* 选择所有偶数的小li */
-.shortcut .fr ul li:nth-child(even) {
-    width: 1px;
-    height: 12px;
-    background-color: #666;
-    margin: 9px 15px 0;
 }
 .arrow-icon::after {
     content: '\e91e';

@@ -47,23 +47,25 @@ header {
     height: 37px;
     border: 1px solid #ccc;
 }
-.error {
-    color: #c81523;
+#tel p {
+    display: inline-block;
 }
-.error_icon,
 .success_icon {
     display: inline-block;
     vertical-align: middle;
     width: 20px;
     height: 20px;
-    background: url(../images/error.png) no-repeat;
+    background: url(../images/success.png) no-repeat;
     margin-top: -2px;
 }
-.success {
-    color: green;
+.wrong {
+    background-image: url(../images/error.png);
 }
-.success_icon {
-    background: url(../images/success.png) no-repeat;
+.right {
+    background-image: url(../images/success.png);
+}
+.null {
+    color: green;
 }
 .safe {
     padding-left: 170px;
