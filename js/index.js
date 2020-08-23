@@ -47,6 +47,9 @@ window.addEventListener('load', function () {
             goback.style.display = 'none';
         }
     })
+    goback.addEventListener('click',function() {
+        window.scroll(0,0);//不用单位
+    })
     var arrowl = document.querySelector('.arrow-l');
     var arrowr = document.querySelector('.arrow-r');
     var focus = document.querySelector('.focus');
@@ -62,16 +65,16 @@ window.addEventListener('load', function () {
         arrowl.style.display = 'none';
         arrowr.style.display = 'none';
         // 鼠标离开自动播放
-        timer = setInterval(function() {
-            // 手动调用点击事件
+        timer = setInterval(function () {
+        // 手动调用点击事件
             arrowr.click();
-        },2000)
+        }, 3000)
     })
     // 动态生成轮播图中的小点数
     var ul = focus.querySelector('ul');
     var ol = focus.querySelector('.circle');
     for (var i = 0; i < ul.children.length; i++) {
-        
+
         // 创建li
         var li = document.createElement('li');
         // 记录当前小圆圈的索引号 通过自定义属性来做
@@ -105,52 +108,64 @@ window.addEventListener('load', function () {
     var num = 0;
     // 控制小圆圈的播放
     var circle = 0;
+    // flag节流阀 
+    var flag = true;
     arrowr.addEventListener('click', function () {
-        // 如果走到了最后一张图片，此时 我们的ul要快速复原为left 改为 0;
-        if (num == ul.children.length - 1) {
-            ul.style.left = 0;
-            num = 0;
+        if (flag) {
+            flag = false;//关闭节流阀
+            // 如果走到了最后一张图片，此时 我们的ul要快速复原为left 改为 0;
+            if (num == ul.children.length - 1) {
+                ul.style.left = 0;
+                num = 0;
+            }
+            num++;
+            animate(ul, -num * focuswidth, function () {
+                flag = true;//打开节流阀
+            });
+            // 点击右侧按钮，小圆圈跟随一起变化 可以再声明一个变量控制小圆圈
+            circle++;
+            // 如果circle == 4 这里的4是小圆点的个数 说明走到最后我们克隆的这张图片了然后将circle复原为0
+            if (circle == ol.children.length) {
+                circle = 0;
+            }
+            // 先清除其余小圆圈的current类名
+            for (var i = 0; i < ol.children.length; i++) {
+                ol.children[i].className = '';
+            }
+            // 留下当前小圆圈的类名
+            ol.children[circle].className = 'current';
         }
-        num++;
-        animate(ul, -num * focuswidth);
-        // 点击右侧按钮，小圆圈跟随一起变化 可以再声明一个变量控制小圆圈
-        circle++;
-        // 如果circle == 4 这里的4是小圆点的个数 说明走到最后我们克隆的这张图片了然后将circle复原为0
-        if (circle == ol.children.length) {
-            circle = 0;
-        }
-        // 先清除其余小圆圈的current类名
-        for (var i = 0; i < ol.children.length; i++) {
-            ol.children[i].className = '';
-        }
-        // 留下当前小圆圈的类名
-        ol.children[circle].className = 'current';
     });
     // 左侧按钮
     arrowl.addEventListener('click', function () {
-        // 如果走到了最后一张图片，此时 我们的ul要快速复原为left 改为 0;
-        if (num == 0) {
-            num = ul.children.length -1;
-            ul.style.left = -num * focuswidth + 'px';
+        if (flag) {
+            flag = false;
+            // 如果走到了最后一张图片，此时 我们的ul要快速复原为left 改为 0;
+            if (num == 0) {
+                num = ul.children.length - 1;
+                ul.style.left = -num * focuswidth + 'px';
+            }
+            num--;
+            animate(ul, -num * focuswidth, function () {
+                flag = true;
+            });
+            // 点击右侧按钮，小圆圈跟随一起变化 可以再声明一个变量控制小圆圈
+            circle--;
+            // 如果circle <0 说明走到了第一张图片了 然后将circle改为为第四个小圆圈
+            if (circle < 0) {
+                circle = ol.children.length - 1;
+            }
+            // 先清除其余小圆圈的current类名
+            for (var i = 0; i < ol.children.length; i++) {
+                ol.children[i].className = '';
+            }
+            // 留下当前小圆圈的类名
+            ol.children[circle].className = 'current';
         }
-        num--;
-        animate(ul, -num * focuswidth);
-        // 点击右侧按钮，小圆圈跟随一起变化 可以再声明一个变量控制小圆圈
-        circle--;
-        // 如果circle <0 说明走到了第一张图片了 然后将circle改为为第四个小圆圈
-        if (circle < 0) {
-            circle = ol.children.length - 1;
-        }
-        // 先清除其余小圆圈的current类名
-        for (var i = 0; i < ol.children.length; i++) {
-            ol.children[i].className = '';
-        }
-        // 留下当前小圆圈的类名
-        ol.children[circle].className = 'current';
     });
-    var timer = setInterval(function() {
+    var timer = setInterval(function () {
         // 手动调用点击事件
         arrowr.click();
-    },2000)
+    }, 3000)
 
 })
